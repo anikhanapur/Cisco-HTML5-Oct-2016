@@ -1,4 +1,6 @@
 CACHE MANIFEST
+# Ver 3.0
+
 CACHE:
 taskStorage.js
 taskManager.js

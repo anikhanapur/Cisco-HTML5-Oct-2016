@@ -7,9 +7,17 @@
 	<link rel="stylesheet" href="style-online.css">
 	<script src="taskStorage.js"></script>
 	<script src="taskManager.js"></script>
+	<script>
+		applicationCache.onupdateready = function(){
+			var updateApp = window.confirm('A new verion of the app is available. Do you want to use it now?');
+			if (updateApp){
+				window.location.reload();
+			}
+		}
+	</script>
 </head>
 <body>
-	<h1>Task Manager</h1>
+	<h1>Task Manager - Ver 3.0</h1>
 	<hr>
 	<div id="status">
 		Offline
