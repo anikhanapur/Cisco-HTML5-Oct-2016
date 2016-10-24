@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<style>
+		.completed{
+			color : red;
+			text-decoration: line-through;
+			font-style: italic;
+			font-weight: bold;
+		}
+		li{
+			cursor: pointer;
+		}
+	</style>
+	<script>
+		(function(){
+			window.addEventListener("DOMContentLoaded", init);
+
+			var btnAddTask = null,
+				btnRemoveCompleted = null,
+				olTaskList = null,
+				txtTaskName = null;
+
+			var currentTaskId = 0;
+
+			function init(){
+				btnAddTask = document.getElementById("btnAddTask");
+				btnRemoveCompleted = document.getElementById('btnRemoveCompleted');
+				olTaskList = document.getElementById('olTaskList');
+				txtTaskName = document.getElementById("txtTaskName");
+
+				btnAddTask.addEventListener('click', onBtnAddTaskClick);
+				btnRemoveCompleted.addEventListener('click', onBtnRemoveCompletedClick);
+			}
+			function onBtnAddTaskClick(){
+				var taskName = txtTaskName.value;
+				var newTaskItem = document.createElement("li");
+				newTaskItem.innerHTML = taskName;
+				newTaskItem.setAttribute("task-id", ++currentTaskId);
+				newTaskItem.addEventListener("click", onTaskItemClick);
+				olTaskList.appendChild(newTaskItem);
+			}
+
+			function onTaskItemClick(){
+				this.classList.toggle("completed");
+			}
+
+			function onBtnRemoveCompletedClick(){
+				var taskItems = olTaskList.children;
+				for(var i = taskItems.length-1; i >=0; i--)
+					if (taskItems[i].classList.contains('completed'))
+						olTaskList.removeChild(taskItems[i]);
+			}
+
+		})();
+	</script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<hr>
+	<div class="content">
+		<label for="">Task :</label>
+		<input type="text" name="" id="txtTaskName">
+		<input type="button" value="Add Task" id="btnAddTask">
+		<input type="button" value="Remove Completed" id="btnRemoveCompleted">
+		<ol id="olTaskList">
+			
+		</ol>
+	</div>
+</body>
+</html>
