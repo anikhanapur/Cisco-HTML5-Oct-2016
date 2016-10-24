@@ -1,0 +1,16 @@
+1. Persistant storage
+2. Same origin policy
+3. Key value store
+4. Value has to be a string
+5. Key has to be unique
+6. 10 MB limit
+
+7. window.localStorage
+		- is an object
+		
+		-   setItem(key, value)
+		-   getItem(key) => value
+		-   removeItem(key)
+		-   clear()
+		-   key(index) => key at index
+		-   length

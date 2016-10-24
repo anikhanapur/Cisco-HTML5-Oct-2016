@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" manifest="app.manifest">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<link rel="stylesheet" href="style-default.css">
+	<link rel="stylesheet" href="style-online.css">
+	<script src="taskStorage.js"></script>
+	<script src="taskManager.js"></script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<hr>
+	<div id="status">
+		Offline
+	</div>
+	<div class="content">
+		<label for="">Task :</label>
+		<input type="text" name="" id="txtTaskName">
+		<input type="button" value="Add Task" id="btnAddTask">
+		<input type="button" value="Remove Completed" id="btnRemoveCompleted">
+		<ol id="olTaskList">
+			
+		</ol>
+	</div>
+</body>
+</html>

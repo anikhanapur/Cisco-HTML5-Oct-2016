@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<style>
+		.completed{
+			color : red;
+			text-decoration: line-through;
+			font-style: italic;
+			font-weight: bold;
+		}
+		li{
+			cursor: pointer;
+		}
+	</style>
+	<script>
+		var taskStorage =(function(){
+			var currentTaskId = 0;
+			var storage = window.sessionStorage;
+
+			function getAllTasks(){
+				var tasks = [];
+				for(var i=0; i < storage.length; i++){
+					var key = storage.key(i);
+					var data = storage.getItem(key);
+					var task = JSON.parse(data);
+					currentTaskId = currentTaskId < task.id ? task.id : currentTaskId;
+					tasks.push(task);
+				}
+				return tasks;
+			}
+			function addNewTask(taskName){
+				var newTask = {
+					id : ++currentTaskId,
+					name : taskName,
+					isCompleted : false
+				};
+				storage.setItem(newTask.id, JSON.stringify(newTask));
+				return newTask;
+			}
+			function removeTask(id){
+				storage.removeItem(id);
+			}
+			function toggleTask(id){
+				var task = JSON.parse(storage.getItem(id));
+				task.isCompleted = !task.isCompleted;
+				storage.setItem(id, JSON.stringify(task));
+			}
+			return {
+				getAll : getAllTasks,
+				addNew : addNewTask,
+				remove : removeTask,
+				toggle : toggleTask
+			}
+		})();
+
+		(function(){
+			window.addEventListener("DOMContentLoaded", init);
+
+			var btnAddTask = null,
+				btnRemoveCompleted = null,
+				olTaskList = null,
+				txtTaskName = null;
+
+			
+
+			
+			window.addEventListener('storage', loadTasksFromStorage);
+
+			function init(){
+				btnAddTask = document.getElementById("btnAddTask");
+				btnRemoveCompleted = document.getElementById('btnRemoveCompleted');
+				olTaskList = document.getElementById('olTaskList');
+				txtTaskName = document.getElementById("txtTaskName");
+
+				btnAddTask.addEventListener('click', onBtnAddTaskClick);
+				btnRemoveCompleted.addEventListener('click', onBtnRemoveCompletedClick);
+
+				loadTasksFromStorage();
+			}
+			function loadTasksFromStorage(){
+				olTaskList.innerHTML = '';
+				var tasks = taskStorage.getAll();
+				for(var i=0; i < tasks.length ; i++)
+					addTaskToList(tasks[i]);
+			}
+			function onBtnAddTaskClick(){
+				var taskName = txtTaskName.value;
+				var newTask = taskStorage.addNew(taskName);
+				addTaskToList(newTask);
+			}
+
+			function addTaskToList(task){
+				var newTaskItem = document.createElement("li");
+				newTaskItem.innerHTML = task.name;
+				newTaskItem.setAttribute("task-id", task.id);
+				newTaskItem.addEventListener("click", onTaskItemClick);
+				if (task.isCompleted)
+					newTaskItem.classList.add("completed");
+				olTaskList.appendChild(newTaskItem);
+			}
+
+			function onTaskItemClick(){
+				this.classList.toggle("completed");
+				var id = this.getAttribute("task-id");
+				taskStorage.toggle(id);
+			}
+
+			function onBtnRemoveCompletedClick(){
+				var taskItems = olTaskList.children;
+				for(var i = taskItems.length-1; i >=0; i--)
+					if (taskItems[i].classList.contains('completed')){
+						var id = taskItems[i].getAttribute("task-id");
+						taskStorage.remove(id);
+						olTaskList.removeChild(taskItems[i]);
+					}
+			}
+
+		})();
+	</script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<hr>
+	<div class="content">
+		<label for="">Task :</label>
+		<input type="text" name="" id="txtTaskName">
+		<input type="button" value="Add Task" id="btnAddTask">
+		<input type="button" value="Remove Completed" id="btnRemoveCompleted">
+		<ol id="olTaskList">
+			
+		</ol>
+	</div>
+</body>
+</html>
