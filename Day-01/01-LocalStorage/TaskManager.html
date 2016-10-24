@@ -23,6 +23,8 @@
 				olTaskList = null,
 				txtTaskName = null;
 
+			var storage = window.localStorage;
+
 			var currentTaskId = 0;
 
 			function init(){
@@ -33,12 +35,31 @@
 
 				btnAddTask.addEventListener('click', onBtnAddTaskClick);
 				btnRemoveCompleted.addEventListener('click', onBtnRemoveCompletedClick);
+
+				loadTasksFromStorage();
+			}
+			function loadTasksFromStorage(){
+				for(var i=0; i < storage.length; i++){
+					var key = storage.key(i);
+					var data = storage.getItem(key);
+					var task = JSON.parse(data);
+					addTaskToList(key, task);
+				}
 			}
 			function onBtnAddTaskClick(){
 				var taskName = txtTaskName.value;
+				var newTask = {
+					name : taskName,
+					isCompleted : false
+				};
+				storage.setItem(currentTaskId, JSON.stringify(newTask));
+				addTaskToList(currentTaskId, newTask);
+			}
+
+			function addTaskToList(id, task){
 				var newTaskItem = document.createElement("li");
-				newTaskItem.innerHTML = taskName;
-				newTaskItem.setAttribute("task-id", ++currentTaskId);
+				newTaskItem.innerHTML = task.name;
+				newTaskItem.setAttribute("task-id", id);
 				newTaskItem.addEventListener("click", onTaskItemClick);
 				olTaskList.appendChild(newTaskItem);
 			}
