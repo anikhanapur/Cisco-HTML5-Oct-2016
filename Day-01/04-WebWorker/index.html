@@ -6,21 +6,24 @@
 	<script>
 		(function(){
 			window.addEventListener("DOMContentLoaded", init);
+			var longRunningTaskWorker = null;
 			function init(){
-				document.getElementById("btnDoWork").addEventListener("click", function(){
+				longRunningTaskWorker = new Worker('./longRunningTask.js')
+				longRunningTaskWorker.addEventListener('message', onWorkerMessage);
+				var btnDoWork = document.getElementById('btnDoWork');
+				btnDoWork.addEventListener("click", onBtnDoWorkClick)
+
+			}
+
+			function onWorkerMessage(){
+				document.getElementById("divMessages").innerHTML += "Work Completed <br/>";
+			}
+
+			function onBtnDoWorkClick(){		
+				longRunningTaskWorker.postMessage('start');
+				//displayMessage("Work Completed");
+			}
 			
-					doWork();
-					displayMessage("Work Completed");
-				})
-
-			}
-			function doWork(){
-				for(var i=0; i < 10000; i++)
-					for(var j=0; j < 10000; j++)
-						for(var k=0; k < 100; k++){
-
-						}
-			}
 			function displayMessage(msg){
 				document.getElementById("divMessages").innerHTML += msg + "<br/>";
 			}
