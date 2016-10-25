@@ -3,6 +3,37 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Prime Finder</title>
+	<script>
+		(function(){
+			window.addEventListener("DOMContentLoaded", init);
+			var primeFinderWorker = null;
+			function init(){
+				var btnFindPrimeCount = document.getElementById("btnFindPrimeCount");
+				btnFindPrimeCount.addEventListener('click', onBtnFindPrimeCountClick);
+
+				primeFinderWorker = new Worker('./primeFinderWorker.js');
+				primeFinderWorker.addEventListener('message', onWorkerMessage);
+			}
+			function onBtnFindPrimeCountClick(){
+				var from = document.getElementById("txtFrom").value,
+					to = document.getElementById("txtTo").value;
+
+				primeFinderWorker.postMessage({from : from, to : to});
+
+			}
+			function onWorkerMessage(evt){
+				if (evt.data.type === 'done'){
+					document.getElementById("divResult").innerHTML = evt.data.result;
+					document.getElementById("workerProgress").value = 100;
+				} else if (evt.data.type === 'progress'){
+					document.getElementById("workerProgress").value = evt.data.percentCompleted;
+				} else {
+					console.log('unkwon message', evt);
+				}
+			}
+		})();
+
+	</script>
 </head>
 <body>
 	<h1>Prime Count Finder</h1>
@@ -13,5 +44,8 @@
 	<input type="text" name="" id="txtTo">
 	<input type="button" value="Find # of Primes" id="btnFindPrimeCount">
 	<div id="divResult"></div>
+	<div>
+		<progress id="workerProgress" min="0" max="100" value="0"></progress>
+	</div>
 </body>
 </html>
