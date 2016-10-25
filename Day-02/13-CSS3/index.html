@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS 3.0 Demo</title>
+	<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+	<style>
+		#content{
+			height : 300px;
+			width: 300px;
+			margin : 300px;
+			line-height: 300px;
+			text-align: center;
+			font-size: 28pt;
+			border : 2px solid black;
+			font-family: 'Gloria Hallelujah', cursive;
+			color : red;
+
+			border-radius: 10px;
+			box-shadow: 0px 0px 0px 15px gray, 0px 0px 0px 30px blue, 0px 0px 0px 45px green;
+			text-shadow: 2px 2px 0px white;
+			background: -webkit-linear-gradient(top left , white 0%, black 50%, white 100%);
+			background: -moz-linear-gradient(top left , white 0%, black 50%, white 100%);
+			background: -o-linear-gradient(top left , white 0%, black 50%, white 100%);
+			background: -ms-linear-gradient(top left , white 0%, black 50%, white 100%);
+			background: linear-gradient(top left , white 0%, black 50%, white 100%);
+
+			-webkit-transition : -webkit-transform 0.5s ease-in 1s;
+
+		}
+		#content:hover{
+			-webkit-transform : rotate(90deg) scale(0.75,0.75);
+		}
+	</style>
+</head>
+<body>
+	<div id="content">CISCO</div>
+</body>
+</html>
